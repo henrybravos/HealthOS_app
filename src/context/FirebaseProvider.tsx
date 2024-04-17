@@ -1,12 +1,18 @@
 import { FirebaseApp } from 'firebase/app'
+import { Firestore, getFirestore } from 'firebase/firestore'
 import { ReactElement, createContext, useContext } from 'react'
 
 import app from '../../firebaseConfig'
 
-const FirebaseContext = createContext<FirebaseApp | null>(null)
+type FirebaseContextType = {
+  app: FirebaseApp
+  db: Firestore
+}
+const FirebaseContext = createContext<FirebaseContextType | null>(null)
 
 const FirebaseAppProvider = ({ children }: { children: ReactElement }) => {
-  return <FirebaseContext.Provider value={app}>{children}</FirebaseContext.Provider>
+  const db = getFirestore(app)
+  return <FirebaseContext.Provider value={{ app, db }}>{children}</FirebaseContext.Provider>
 }
 export const useFirebaseContext = () => {
   const ctx = useContext(FirebaseContext)
