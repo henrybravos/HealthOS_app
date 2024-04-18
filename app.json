@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "anglo_app",
-    "slug": "anglo_app",
-    "version": "1.0.0",
+    "name": "HealthOS",
+    "slug": "HealthOS",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -23,6 +25,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "owner": "wilson-gallardo",
+    "extra": {
+      "eas": {
+        "projectId": "e1ce8eb4-6760-4ba4-8fa9-b287c872dbf4"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/e1ce8eb4-6760-4ba4-8fa9-b287c872dbf4"
     }
   }
 }

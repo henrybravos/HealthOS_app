@@ -14,12 +14,14 @@
     "expo": "~50.0.8",
     "expo-image-picker": "~14.7.1",
     "expo-status-bar": "~1.11.1",
+    "expo-updates": "~0.24.12",
     "firebase": "^10.11.0",
     "react": "18.2.0",
     "react-native": "0.73.4",
     "react-native-gesture-handler": "~2.14.0",
     "react-native-paper": "^5.12.3",
-    "react-native-reanimated": "~3.6.2"
+    "react-native-reanimated": "~3.6.2",
+    "react-native-screens": "~3.29.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
