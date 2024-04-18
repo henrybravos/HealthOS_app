@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { convertDate } from '@common/helpers/utils'
+import { convertDate, generateId, getExtensionFromUri } from '@common/helpers/utils'
 
 import { initialRacs } from '@features/racs/components/racs.const'
 
@@ -10,24 +10,28 @@ import { Racs, StatusRacs, TypeRacs } from '@core/types'
 type ErrorRacs = Partial<Record<keyof Racs, boolean>>
 type UseCreateRacsProps = {
   resetForm: boolean
-  handleCreateRacs: (racs: Racs) => void
+  racsDB?: Racs
+  handleCreateRacs: (data: { data: Racs; uuid: string }) => void
 }
-export const useCreateRacs = ({ resetForm, handleCreateRacs }: UseCreateRacsProps) => {
+export const useCreateRacs = ({ resetForm, handleCreateRacs, racsDB }: UseCreateRacsProps) => {
   const [errors, setErrors] = useState<ErrorRacs>({})
   const [loadingUpload, setLoadingUpload] = useState(false)
+  const [uriEvidence, setUriEvidence] = useState<string | null>(null)
   const [racs, setRacs] = useState<Partial<Racs>>(initialRacs)
+  const isClosed = racs.status === StatusRacs.CLOSED
+  const modeCreate = !racs.id
 
   useEffect(() => {
-    setRacs(initialRacs)
-    setErrors({})
-  }, [resetForm])
-
-  const createOrUpdateRacs = async () => {
-    const errors: ErrorRacs = {}
-    const isClosed = racs.status === StatusRacs.CLOSED
-    if (!racs.occupation || !racs.occupation?.id) {
-      errors.occupation = true
+    const racs = racsDB || initialRacs
+    if (racsDB) {
+      racs.status = StatusRacs.CLOSED
     }
+    setRacs(racs)
+    setErrors({})
+    setUriEvidence(null)
+  }, [resetForm, racsDB])
+  const validateRacs = () => {
+    const errors: ErrorRacs = {}
     if (racs.type === TypeRacs.ACT && (!racs.act || !racs.act?.id)) {
       errors.act = true
     }
@@ -49,42 +53,46 @@ export const useCreateRacs = ({ resetForm, handleCreateRacs }: UseCreateRacsProp
     if (isClosed && (!racs.controlCondition || !racs.controlCondition?.trim())) {
       errors.controlCondition = true
     }
-    if (isClosed && !racs.evidence?.closeUri) {
-      errors.evidence = true
-    }
-    if (racs.status === StatusRacs.PENDING && !racs.evidence?.openUri) {
-      errors.evidence = true
-    }
-    const uri = isClosed ? racs.evidence?.closeUri : racs.evidence?.openUri
-
-    if (!uri) {
+    if (!uriEvidence) {
       errors.evidence = true
     }
     if (Object.keys(errors).length) {
       setErrors(errors)
-      return
+      return false
     }
-    const parts = uri?.split('/') || []
-    const fileNameWithExtension = parts[parts.length - 1]
+    return true
+  }
+  const createOrUpdateRacs = async () => {
+    if (!validateRacs() || !uriEvidence) return
+
+    const docId = racs.id || generateId()
+    const fileExt = getExtensionFromUri(uriEvidence)
+    const keyEvidence = isClosed ? 'closeUri' : 'openUri'
+    const path = `images/racs/${docId}/${keyEvidence}.${fileExt}`
     setLoadingUpload(true)
     const imgPath = await uploadFile({
-      uri: uri!,
-      path: `images/racs/${fileNameWithExtension}`,
+      uri: uriEvidence,
+      path,
     })
     setLoadingUpload(false)
-    const keyEvidence = isClosed ? 'closeUri' : 'openUri'
     const racsUpload = {
       ...racs,
       evidence: {
+        ...racs.evidence,
         [keyEvidence]: imgPath,
       },
-      createdAt: convertDate(new Date()),
-      openAt: convertDate(new Date()),
     } as Racs
+    if (modeCreate) {
+      racsUpload.createdAt = convertDate(new Date())
+      racsUpload.openAt = convertDate(new Date())
+    }
     if (isClosed) {
       racsUpload.closeAt = convertDate(new Date())
     }
-    handleCreateRacs(racsUpload)
+    handleCreateRacs({
+      data: racsUpload,
+      uuid: docId,
+    })
   }
   const onChangeValueRacs =
     (keyRacs: keyof Racs) => (selectedItem: Racs[typeof keyRacs] | null) => {
@@ -105,22 +113,17 @@ export const useCreateRacs = ({ resetForm, handleCreateRacs }: UseCreateRacsProp
       }
     }
   const onChangeEvidence = (image: string | null) => {
-    const evidenceClose = { closeUri: image || undefined }
-    const evidenceOpen = { openUri: image || undefined }
-    const isClosed = racs.status === StatusRacs.CLOSED
-    const evidence = isClosed ? evidenceClose : evidenceOpen
-    onChangeValueRacs('evidence')({
-      ...evidence,
-    })
+    setUriEvidence(image)
   }
-  const URI = racs.status === StatusRacs.CLOSED ? racs.evidence?.closeUri : racs.evidence?.openUri
+
   return {
     racs,
     errors,
+    modeCreate,
+    uriEvidence,
+    loadingUpload,
     createOrUpdateRacs,
     onChangeValueRacs,
     onChangeEvidence,
-    URI,
-    loadingUpload,
   }
 }

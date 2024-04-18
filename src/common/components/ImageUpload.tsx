@@ -46,6 +46,7 @@ const ImageUpload = ({
             left: 10,
             color: theme.colors.inverseSurface,
             paddingHorizontal: 4,
+            zIndex: 1,
             backgroundColor: theme.colors.surface,
           }}
           variant="bodySmall"
@@ -56,15 +57,15 @@ const ImageUpload = ({
       <TouchableWithoutFeedback onPress={pickImage('camera')}>
         <Image
           {...rest}
-          style={{ height, width, resizeMode: 'center' }}
+          style={{ height, width, resizeMode: 'center', marginTop: 8 }}
           borderRadius={4}
           source={source}
         />
       </TouchableWithoutFeedback>
       {uri && (
         <IconButton
-          style={{ position: 'absolute', right: 0, top: 72 }}
-          mode="outlined"
+          style={{ position: 'absolute', right: 4, top: 76 }}
+          mode="contained"
           size={18}
           icon="delete"
           onPress={handleResetImage}
@@ -72,14 +73,14 @@ const ImageUpload = ({
       )}
 
       <IconButton
-        style={{ position: 'absolute', right: 0, top: 0 }}
+        style={{ position: 'absolute', right: 4, top: 4 }}
         mode="contained"
         size={18}
         icon="camera"
         onPress={pickImage('camera')}
       />
       <IconButton
-        style={{ position: 'absolute', right: 0, top: 36 }}
+        style={{ position: 'absolute', right: 4, top: 40 }}
         mode="contained"
         size={18}
         icon="image-multiple"

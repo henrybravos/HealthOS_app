@@ -37,7 +37,6 @@ export type Racs = {
   evidence: EvidenceRacs
   eventType: EventType
   condition?: UnsafeActCondition
-  occupation: Occupation
   description: string
   classification: ClassificationEvent
   controlCondition: string

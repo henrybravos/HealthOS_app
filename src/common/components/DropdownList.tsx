@@ -1,6 +1,10 @@
 import { useState } from 'react'
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
-import { Button, Menu, TextInput } from 'react-native-paper'
+import { Platform, TouchableOpacity } from 'react-native'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { Menu, Text, TextInput, useTheme } from 'react-native-paper'
+
+const isAndroid = Platform.OS === 'android'
+const Touchable = isAndroid ? TouchableOpacity : TouchableWithoutFeedback
 
 export type OptionSelected = {
   id: string
@@ -29,6 +33,7 @@ function DropdownList<T>({
   callbackSelectedItem = () => {},
 }: DropdownListProps<T>) {
   const [openMenu, setOpenMenu] = useState(false)
+  const theme = useTheme()
   const toggleOpenMenu = () => setOpenMenu((prev) => !prev)
   const handleItemSelected = (item: T | null) => () => {
     callbackSelectedItem(item)
@@ -45,24 +50,44 @@ function DropdownList<T>({
       }}
       anchorPosition="bottom"
       anchor={
-        <TouchableOpacity onPress={toggleOpenMenu}>
+        <Touchable onPress={toggleOpenMenu}>
           <TextInput
             dense
             editable={false}
-            style={{ flex: 1 }}
+            contentStyle={{
+              fontSize: 12,
+              left: -24,
+            }}
+            style={{
+              backgroundColor: theme.colors.surface,
+              height: 40,
+              width: '100%',
+            }}
             mode="outlined"
-            contentStyle={{ fontSize: 12 }}
             error={error}
             value={itemSelected?.[keyRender] as string}
-            label={label}
+            label={
+              <Text
+                variant="bodySmall"
+                style={{
+                  backgroundColor: theme.colors.surface,
+                  color: theme.colors.inverseSurface,
+                  fontSize: 16,
+                }}
+              >
+                {label}
+              </Text>
+            }
             left={
               <TextInput.Icon
                 icon={openMenu ? 'chevron-up' : 'chevron-down'}
                 onPress={toggleOpenMenu}
+                size={20}
+                style={{ height: 20, width: 20, padding: 0, position: 'absolute', left: -10 }}
               />
             }
           />
-        </TouchableOpacity>
+        </Touchable>
       }
     >
       <Menu.Item

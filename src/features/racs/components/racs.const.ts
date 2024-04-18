@@ -1,11 +1,11 @@
 import { ClassificationEvent, Racs, StatusRacs, TypeRacs } from '@core/types'
 
-export const defaultOccupation = { id: '', name: 'Seleccionar ocupación' }
-export const defaultPlace = { id: '', name: 'Seleccionar lugar' }
-export const defaultAct = { id: '', name: 'Seleccionar un acto subestandar' }
-export const defaultCondition = { id: '', name: 'Seleccionar una condición subestandar' }
-export const defaultCompany = { id: '', name: 'Selec. empresa reportada' }
-export const defaultEventType = { id: '', name: 'Seleccionar un tipo de evento' }
+export const defaultOccupation = { id: '', name: '-------' }
+export const defaultPlace = { id: '', name: '-------' }
+export const defaultAct = { id: '', name: '-------' }
+export const defaultCondition = { id: '', name: '-------' }
+export const defaultCompany = { id: '', name: '-------' }
+export const defaultEventType = { id: '', name: '-------' }
 export const classificationOptions = [
   {
     label: ClassificationEvent.HIGH,

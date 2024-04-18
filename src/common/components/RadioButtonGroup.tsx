@@ -6,12 +6,14 @@ type RadioButtonGroupComponentProps = Omit<RadioButtonGroupProps, 'children'> & 
   label?: string
   error?: boolean
   numColumns?: number
+  disabled?: boolean
 }
 const RadioButtonGroup = ({
   items,
   error,
   label = 'Seleccione una opción',
   numColumns = 1,
+  disabled,
   ...rest
 }: RadioButtonGroupComponentProps) => {
   const theme = useTheme()
@@ -25,7 +27,6 @@ const RadioButtonGroup = ({
           left: 10,
           zIndex: 1,
           color: theme.colors.inverseSurface,
-          paddingHorizontal: 4,
         }}
         variant="bodySmall"
       >
@@ -45,6 +46,7 @@ const RadioButtonGroup = ({
         {items.map((item) => (
           <RadioButton.Item
             key={item.value}
+            disabled={disabled}
             labelVariant="labelSmall"
             mode="ios"
             label={item.label}

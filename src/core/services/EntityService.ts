@@ -5,9 +5,11 @@ import {
   WhereFilterOp,
   addDoc,
   collection,
+  doc,
   getDocs,
   getFirestore,
   query,
+  setDoc,
   where,
 } from 'firebase/firestore'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
@@ -34,17 +36,31 @@ const convertToEntity = <T>(querySnapshot: QuerySnapshot<DocumentData, DocumentD
 }
 export const uploadFile = async ({ path, uri }: { uri: string; path: string }): Promise<string> => {
   const storageRef = ref(storage, path)
-  const response = await fetch(uri)
-  const blob = await response.blob()
-  await uploadBytes(storageRef, blob)
-  const url = await getDownloadURL(storageRef)
-  console.log('Uploaded a blob or file!', url)
-  return url
+  console.log('Uri', uri)
+  try {
+    const response = await fetch(uri)
+    const blob = await response.blob()
+    console.log('blob', blob.size)
+    await uploadBytes(storageRef, blob)
+    const url = await getDownloadURL(storageRef)
+    console.log('Uploaded a blob or file!', url)
+    return url
+  } catch (error) {
+    console.error('Error uploading file', error)
+    return ''
+  }
 }
 const addDocument = async <T>(collectionName: string, data: T): Promise<T> => {
   const docRef = await addDoc(collection(db, collectionName), data as unknown)
   return {
     id: docRef.id,
+    ...data,
+  }
+}
+const setDocument = async <T>(collectionName: string, data: T, uuid: string): Promise<T> => {
+  await setDoc(doc(db, collectionName, uuid), data as unknown)
+  return {
+    id: uuid,
     ...data,
   }
 }
@@ -66,6 +82,7 @@ const EntityService = {
   getAllDocuments,
   getDocumentsByQuery,
   addDocument,
+  setDocument,
 }
 const RacsService = {
   getRacsByUser: async (user: User) => {
@@ -79,6 +96,9 @@ const RacsService = {
   },
   addDocument: async (data: Racs) => {
     return EntityService.addDocument(COLLECTIONS.racs, data)
+  },
+  setDocument: async ({ data, uuid }: { data: Racs; uuid: string }) => {
+    return EntityService.setDocument(COLLECTIONS.racs, data, uuid)
   },
 }
 const OccupationService = {

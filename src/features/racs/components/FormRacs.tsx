@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import { Button, ProgressBar, Surface, Text, TextInput } from 'react-native-paper'
+import { Button, ProgressBar, Surface, TextInput, useTheme } from 'react-native-paper'
 
 import { DropdownList, ImageUpload, RadioButtonGroup } from '@common/components'
 
@@ -22,13 +22,13 @@ import {
   defaultCompany,
   defaultCondition,
   defaultEventType,
-  defaultOccupation,
   defaultPlace,
   statusOptions,
   typesOptions,
 } from './racs.const'
 
 type FormRacsProps = {
+  racs?: Racs
   acts: UnsafeActCondition[]
   places: Place[]
   loading: boolean
@@ -36,8 +36,7 @@ type FormRacsProps = {
   companies: Company[]
   eventTypes: EventType[]
   conditions: UnsafeActCondition[]
-  occupations: Occupation[]
-  handleCreateRacs: (racs: Racs) => void
+  handleCreateRacs: (data: { data: Racs; uuid: string }) => void
 }
 
 const FormRacs = ({
@@ -48,62 +47,55 @@ const FormRacs = ({
   companies,
   eventTypes,
   conditions,
-  occupations,
   handleCreateRacs,
+  racs,
 }: FormRacsProps) => {
-  const {
-    errors,
-    racs,
-    onChangeEvidence,
-    onChangeValueRacs,
-    createOrUpdateRacs,
-    URI,
-    loadingUpload,
-  } = useCreateRacs({ resetForm, handleCreateRacs })
+  const ctxForm = useCreateRacs({ resetForm, handleCreateRacs, racsDB: racs })
+  const theme = useTheme()
   return (
-    <Surface style={{ gap: 8, flex: 1, margin: 8, padding: 8 }} elevation={2}>
+    <Surface
+      style={{
+        gap: 8,
+        flex: 1,
+        margin: 4,
+        borderRadius: 4,
+        padding: 8,
+        backgroundColor: theme.colors.surface,
+      }}
+      elevation={2}
+    >
       {loading && <ProgressBar indeterminate visible={loading} />}
-      <DropdownList
-        error={errors.occupation}
-        keyIdRender="id"
-        keyRender="name"
-        defaultOptionSelected={defaultOccupation}
-        label="Ocupación"
-        items={occupations}
-        itemSelected={racs.occupation}
-        callbackSelectedItem={onChangeValueRacs('occupation')}
-        autoClose
-      />
+
       <RadioButtonGroup
-        onValueChange={onChangeValueRacs('type')}
-        value={racs.type || ''}
+        onValueChange={ctxForm.onChangeValueRacs('type')}
+        value={ctxForm.racs.type || ''}
         items={typesOptions}
-        error={errors.type}
+        error={ctxForm.errors.type}
         label="Tipo de reporte"
       />
-      {racs.type === TypeRacs.ACT && (
+      {ctxForm.racs.type === TypeRacs.ACT && (
         <DropdownList
-          error={errors.act}
+          error={ctxForm.errors.act}
           keyIdRender="id"
           defaultOptionSelected={defaultAct}
           keyRender="name"
           label="Acto subestándar"
           items={acts}
-          itemSelected={racs.act}
-          callbackSelectedItem={onChangeValueRacs('act')}
+          itemSelected={ctxForm.racs.act}
+          callbackSelectedItem={ctxForm.onChangeValueRacs('act')}
           autoClose
         />
       )}
-      {racs.type === TypeRacs.CONDITION && (
+      {ctxForm.racs.type === TypeRacs.CONDITION && (
         <DropdownList
           keyIdRender="id"
-          error={errors.condition}
+          error={ctxForm.errors.condition}
           defaultOptionSelected={defaultCondition}
           keyRender="name"
           label="Condición subestándar"
           items={conditions}
-          itemSelected={racs.condition}
-          callbackSelectedItem={onChangeValueRacs('condition')}
+          itemSelected={ctxForm.racs.condition}
+          callbackSelectedItem={ctxForm.onChangeValueRacs('condition')}
           autoClose
         />
       )}
@@ -111,80 +103,85 @@ const FormRacs = ({
         <View style={{ flex: 1 }}>
           <DropdownList
             keyIdRender="id"
-            error={errors.place}
+            error={ctxForm.errors.place}
             defaultOptionSelected={defaultPlace}
             keyRender="name"
             label="Lugar"
             items={places}
-            itemSelected={racs.place}
-            callbackSelectedItem={onChangeValueRacs('place')}
+            itemSelected={ctxForm.racs.place}
+            callbackSelectedItem={ctxForm.onChangeValueRacs('place')}
             autoClose
           />
         </View>
-        <View style={{ flex: 1.25 }}>
+        <View style={{ flex: 1 }}>
           <DropdownList
             keyIdRender="id"
-            error={errors.company}
+            error={ctxForm.errors.company}
             defaultOptionSelected={defaultCompany}
             keyRender="name"
             label="Empresa reportada"
             items={companies}
-            itemSelected={racs.company}
-            callbackSelectedItem={onChangeValueRacs('company')}
+            itemSelected={ctxForm.racs.company}
+            callbackSelectedItem={ctxForm.onChangeValueRacs('company')}
             autoClose
           />
         </View>
       </View>
       <TextInput
-        onChangeText={onChangeValueRacs('description')}
-        value={racs.description || ''}
+        onChangeText={ctxForm.onChangeValueRacs('description')}
+        value={ctxForm.racs.description || ''}
         mode="outlined"
         label="Descripción breve del evento"
         multiline
-        error={errors.description}
+        error={ctxForm.errors.description}
       />
       <RadioButtonGroup
-        onValueChange={onChangeValueRacs('classification')}
-        value={racs.classification || ''}
+        onValueChange={ctxForm.onChangeValueRacs('classification')}
+        value={ctxForm.racs.classification || ''}
         items={classificationOptions}
         label="Clasificación"
       />
       <DropdownList
         keyIdRender="id"
-        error={errors.eventType}
+        error={ctxForm.errors.eventType}
         defaultOptionSelected={defaultEventType}
         keyRender="name"
         label="Tipo de evento"
         items={eventTypes}
-        itemSelected={racs.eventType}
-        callbackSelectedItem={onChangeValueRacs('eventType')}
+        itemSelected={ctxForm.racs.eventType}
+        callbackSelectedItem={ctxForm.onChangeValueRacs('eventType')}
         autoClose
       />
 
       <RadioButtonGroup
-        onValueChange={onChangeValueRacs('status')}
-        value={racs.status || ''}
+        onValueChange={ctxForm.onChangeValueRacs('status')}
+        value={ctxForm.racs.status || ''}
         items={statusOptions}
         label="Cerré mi proceso"
+        disabled={!ctxForm.modeCreate}
       />
-      {racs.status === StatusRacs.CLOSED && (
+      {ctxForm.racs.status === StatusRacs.CLOSED && (
         <TextInput
-          error={errors.controlCondition}
-          onChangeText={onChangeValueRacs('controlCondition')}
-          value={racs.controlCondition || ''}
+          error={ctxForm.errors.controlCondition}
+          onChangeText={ctxForm.onChangeValueRacs('controlCondition')}
+          value={ctxForm.racs.controlCondition || ''}
           mode="outlined"
           label="¿Cómo se controló el acto/condición subestándar?"
           multiline
         />
       )}
       <ImageUpload
-        callbackSelectImage={onChangeEvidence}
+        callbackSelectImage={ctxForm.onChangeEvidence}
         description={'Evidencia'}
-        loading={loadingUpload}
-        error={errors.evidence}
-        uri={URI}
+        loading={ctxForm.loadingUpload}
+        error={ctxForm.errors.evidence}
+        uri={ctxForm.uriEvidence || undefined}
       />
-      <Button mode="contained" onPress={createOrUpdateRacs} disabled={loading || loadingUpload}>
+      <Button
+        mode="contained"
+        onPress={ctxForm.createOrUpdateRacs}
+        disabled={loading || ctxForm.loadingUpload}
+      >
         GUARDAR
       </Button>
     </Surface>

@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native'
 import { Snackbar } from 'react-native-paper'
 
 import { useFetchApi } from '@common/hooks'
+import { StackNavigation } from '@common/navigation/navigation.types'
 
 import {
   ActService,
@@ -18,10 +19,10 @@ import {
 import { FormRacs } from './components'
 
 const CreateRacsManagement = () => {
-  const navigation = useNavigation()
-  const [loadingOccupations, occupations, fetchGetOccupations] = useFetchApi(
-    OccupationService.getAllOccupations,
-  )
+  const navigation = useNavigation<StackNavigation>()
+  const state = navigation.getState()
+  const params = state.routes[state.index].params
+
   const [loadingCompanies, companies, fetchGetCompanies] = useFetchApi(
     CompanyService.getAllCompanies,
   )
@@ -32,10 +33,10 @@ const CreateRacsManagement = () => {
     ConditionService.getAllConditions,
   )
   const [loadingCreate, racsResponse, fetchCreateRacs, errorCreate, resetCreateData] = useFetchApi(
-    RacsService.addDocument,
+    RacsService.setDocument,
   )
+
   useEffect(() => {
-    fetchGetOccupations()
     fetchGetCompanies()
     fetchGetPlaces()
     fetchGetEvents()
@@ -48,7 +49,6 @@ const CreateRacsManagement = () => {
     }
   }, [racsResponse])
   const loadingForm =
-    loadingOccupations ||
     loadingCompanies ||
     loadingPlaces ||
     loadingEvents ||
@@ -56,8 +56,13 @@ const CreateRacsManagement = () => {
     loadingConditions ||
     loadingCreate
   return (
-    <ScrollView>
+    <ScrollView
+      automaticallyAdjustKeyboardInsets
+      automaticallyAdjustContentInsets
+      automaticallyAdjustsScrollIndicatorInsets
+    >
       <FormRacs
+        racs={params?.racs}
         acts={acts}
         loading={loadingForm}
         resetForm={loadingCreate}
@@ -65,7 +70,6 @@ const CreateRacsManagement = () => {
         companies={companies || []}
         conditions={conditions || []}
         eventTypes={eventTypes || []}
-        occupations={occupations || []}
         handleCreateRacs={fetchCreateRacs}
       />
       {racsResponse?.id && (
