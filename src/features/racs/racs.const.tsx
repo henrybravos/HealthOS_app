@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native'
-import { Fragment } from 'react'
 import { View } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
 
@@ -13,11 +12,9 @@ const ActionsRacs = ({ racs }: { racs: Racs }) => {
   const navigateToEdit = () => {
     navigation.navigate(SCREENS.CREATE_UPDATE_RACS, racs)
   }
-  const color = COLOR_CLASSIFICATION[racs.classification] || 'black'
 
   return (
     <View style={{ flexDirection: 'row', gap: -18, alignItems: 'center' }}>
-      <IconButton size={12} icon="circle" iconColor={color} />
       {racs.status === StatusRacs.PENDING ? (
         <IconButton
           size={18}
@@ -43,10 +40,14 @@ export const COLUMNS_RACS_TABLE: {
       const dateStr = item.createdAt.toDate().toLocaleDateString()
       const dayMonth = dateStr.slice(0, -5)
       const year = dateStr.slice(-4, 20)
+      const color = COLOR_CLASSIFICATION[item.classification] || 'black'
       return (
-        <View>
-          <Text variant="bodySmall">{dayMonth}</Text>
-          <Text variant="bodySmall">{year}</Text>
+        <View style={{ flexDirection: 'row', left: -8, gap: 2 }}>
+          <View style={{ backgroundColor: color, width: 4, borderRadius: 4 }} />
+          <View>
+            <Text variant="bodySmall">{dayMonth}</Text>
+            <Text variant="bodySmall">{year}</Text>
+          </View>
         </View>
       )
     },

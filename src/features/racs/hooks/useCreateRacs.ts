@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { convertDate, generateId, getExtensionFromUri } from '@common/helpers/utils'
 
-import { initialRacs } from '@features/racs/components/form'
+import { initialRacs } from '@features/racs/components/form/racs.const'
 
 import { uploadFile } from '@core/services'
 import { Racs, StatusRacs, TypeRacs } from '@core/types'
