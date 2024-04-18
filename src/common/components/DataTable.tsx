@@ -1,10 +1,16 @@
 import { View } from 'react-native'
-import { DataTable } from 'react-native-paper'
+import { DataTable, ProgressBar } from 'react-native-paper'
 
 type DataTableProps<T> = Omit<React.ComponentProps<typeof DataTable>, 'children'> & {
-  items: T[]
-  columns: { title: string; keyItem: keyof T; flex?: number }[]
+  items: Partial<T>[]
+  columns: {
+    title: string
+    keyItem?: keyof T
+    flex?: number
+    renderCell?: (item: T) => JSX.Element
+  }[]
   minHeight?: number
+  loading?: boolean
 }
 
 export function DataTableComponent<T>(props: DataTableProps<T>) {
@@ -26,20 +32,20 @@ export function DataTableComponent<T>(props: DataTableProps<T>) {
           ))}
         </DataTable.Header>
         <View>
+          {props.loading && <ProgressBar indeterminate />}
           {items.map((item) => (
             <DataTable.Row key={item['id' as keyof T] as string}>
-              {columns.map(({ keyItem, flex }) => {
-                const render = item[keyItem]
-                if (typeof render === 'function') {
+              {columns.map(({ keyItem, flex, renderCell }, indexColumn) => {
+                if (renderCell) {
                   return (
-                    <DataTable.Cell style={{ flex }} key={keyItem as string}>
-                      {render()}
+                    <DataTable.Cell style={{ flex }} key={indexColumn}>
+                      {renderCell(item as T)}
                     </DataTable.Cell>
                   )
                 }
                 return (
                   <DataTable.Cell style={{ flex }} key={keyItem as string}>
-                    {render as string}
+                    {keyItem && (item[keyItem] as string)}
                   </DataTable.Cell>
                 )
               })}
