@@ -2,10 +2,18 @@ import * as ImagePicker from 'expo-image-picker'
 
 const useImagePicker = (callbackSelectImage?: (image: string | null) => void) => {
   const pickImage = (type: 'camera' | 'library') => async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-    if (status !== 'granted') {
-      console.error('Permission to access camera roll is required!')
-      return
+    if (type === 'camera') {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync()
+      if (status !== 'granted') {
+        console.error('Permission to access camera is required!')
+        return
+      }
+    } else {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+      if (status !== 'granted') {
+        console.error('Permission to access camera roll is required!')
+        return
+      }
     }
     const callMethod =
       type === 'camera' ? ImagePicker.launchCameraAsync : ImagePicker.launchImageLibraryAsync
