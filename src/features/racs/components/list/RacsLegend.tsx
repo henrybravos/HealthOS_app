@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import { IconButton, Text, useTheme } from 'react-native-paper'
+import { IconButton, Text } from 'react-native-paper'
 
 import {
   COLOR_RACS_CLOSE,
@@ -10,7 +10,6 @@ import {
 } from '@common/const/colors'
 
 const RacsLegend = () => {
-  const theme = useTheme()
   return (
     <View
       style={{
@@ -18,8 +17,27 @@ const RacsLegend = () => {
         gap: 8,
         justifyContent: 'space-between',
         paddingRight: 8,
+        backgroundColor: 'white',
+        margin: 8,
+        paddingLeft: 8,
+        borderRadius: 8,
       }}
     >
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+        <View style={{ backgroundColor: COLOR_RACS_LOW, width: 4, borderRadius: 4, height: 18 }} />
+        <Text variant="labelSmall">Bajo</Text>
+      </View>
+
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+        <View
+          style={{ backgroundColor: COLOR_RACS_MEDIUM, width: 4, borderRadius: 4, height: 16 }}
+        />
+        <Text variant="labelSmall">Medio</Text>
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+        <View style={{ backgroundColor: COLOR_RACS_HIGH, width: 4, borderRadius: 4, height: 16 }} />
+        <Text variant="labelSmall">Alto</Text>
+      </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <IconButton
           size={16}
@@ -37,33 +55,6 @@ const RacsLegend = () => {
           style={{ margin: 0, padding: 0 }}
         />
         <Text variant="labelSmall">Cerrado</Text>
-      </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <IconButton
-          size={12}
-          icon="circle"
-          iconColor={COLOR_RACS_LOW}
-          style={{ margin: 0, padding: 0 }}
-        />
-        <Text variant="labelSmall">Bajo</Text>
-      </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <IconButton
-          size={12}
-          icon="circle"
-          iconColor={COLOR_RACS_MEDIUM}
-          style={{ margin: 0, padding: 0 }}
-        />
-        <Text variant="labelSmall">Medio</Text>
-      </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <IconButton
-          size={12}
-          icon="circle"
-          iconColor={COLOR_RACS_HIGH}
-          style={{ margin: 0, padding: 0 }}
-        />
-        <Text variant="labelSmall">Alto</Text>
       </View>
     </View>
   )

@@ -25,61 +25,61 @@ export function DataTableComponent<T>(props: DataTableProps<T>) {
   endIndex = endIndex > items.length ? items.length : endIndex
   const itemsPaginated = items.slice(startIndex, endIndex)
   return (
-    <DataTable {...props} style={{ minHeight, justifyContent: 'space-between', flex: 1 }}>
-      <View style={{ flex: 1 }}>
-        <DataTable.Header>
-          {columns.map((column, index) => (
-            <DataTable.Title
-              style={{
-                flex: column.flex,
-              }}
-              key={index}
-            >
-              {column.title}
-            </DataTable.Title>
-          ))}
-        </DataTable.Header>
-        <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={!!props.loading} onRefresh={props.refreshItems} />
-          }
-        >
-          <View>
-            {props.loading && <ProgressBar indeterminate />}
-            {itemsPaginated.map((item) => (
-              <DataTable.Row key={item['id' as keyof T] as string}>
-                {columns.map(({ keyItem, flex, renderCell }, indexColumn) => {
-                  if (renderCell) {
+    <View style={{ height: '100%' }}>
+      <DataTable {...props} style={{ minHeight, flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <DataTable.Header>
+            {columns.map((column, index) => (
+              <DataTable.Title
+                style={{
+                  flex: column.flex,
+                }}
+                key={index}
+              >
+                {column.title}
+              </DataTable.Title>
+            ))}
+          </DataTable.Header>
+          <ScrollView
+            style={{ flex: 1 }}
+            refreshControl={
+              <RefreshControl refreshing={!!props.loading} onRefresh={props.refreshItems} />
+            }
+          >
+            <View>
+              {itemsPaginated.map((item) => (
+                <DataTable.Row key={item['id' as keyof T] as string}>
+                  {columns.map(({ keyItem, flex, renderCell }, indexColumn) => {
+                    if (renderCell) {
+                      return (
+                        <DataTable.Cell style={{ flex, paddingRight: 4 }} key={indexColumn}>
+                          {renderCell(item as T)}
+                        </DataTable.Cell>
+                      )
+                    }
                     return (
-                      <DataTable.Cell style={{ flex, paddingRight: 4 }} key={indexColumn}>
-                        {renderCell(item as T)}
+                      <DataTable.Cell style={{ flex, paddingRight: 4 }} key={keyItem as string}>
+                        {keyItem && (item[keyItem] as string)}
                       </DataTable.Cell>
                     )
-                  }
-                  return (
-                    <DataTable.Cell style={{ flex, paddingRight: 4 }} key={keyItem as string}>
-                      {keyItem && (item[keyItem] as string)}
-                    </DataTable.Cell>
-                  )
-                })}
-              </DataTable.Row>
-            ))}
-          </View>
-        </ScrollView>
-      </View>
-      <View>
+                  })}
+                </DataTable.Row>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
         <DataTable.Pagination
           page={page}
           numberOfPages={Math.ceil(items.length / itemsPerPage)}
           onPageChange={setPage}
-          selectPageDropdownLabel={items.length.toString()}
-          label={`${startIndex + 1}-${endIndex}`}
+          label={`${`0${startIndex + 1}`.slice(-2, 4)}-${endIndex} / ${items.length}`}
           showFastPaginationControls
           numberOfItemsPerPageList={[10, 15, 30]}
           numberOfItemsPerPage={itemsPerPage}
           onItemsPerPageChange={setItemsPerPage}
+          style={{ flexDirection: 'row', flexWrap: 'nowrap' }}
         />
-      </View>
-    </DataTable>
+      </DataTable>
+    </View>
   )
 }
