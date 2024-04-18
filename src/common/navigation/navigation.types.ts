@@ -10,9 +10,7 @@ export enum SCREENS {
 
 export type RootStackParamList = {
   [SCREENS.LIST_RACS]: undefined
-  [SCREENS.CREATE_UPDATE_RACS]: {
-    racs?: Racs
-  }
+  [SCREENS.CREATE_UPDATE_RACS]: Racs | undefined
   [SCREENS.LOGIN]: undefined
 }
 export type StackNavigation = NavigationProp<RootStackParamList>

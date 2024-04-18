@@ -11,17 +11,16 @@ import {
   CompanyService,
   ConditionService,
   EventTypeService,
-  OccupationService,
   PlaceService,
   RacsService,
 } from '@core/services'
 
-import { FormRacs } from './components'
+import { FormRacs } from './components/form'
 
 const CreateRacsManagement = () => {
   const navigation = useNavigation<StackNavigation>()
   const state = navigation.getState()
-  const params = state.routes[state.index].params
+  const racs = state.routes[state.index].params
 
   const [loadingCompanies, companies, fetchGetCompanies] = useFetchApi(
     CompanyService.getAllCompanies,
@@ -62,7 +61,7 @@ const CreateRacsManagement = () => {
       automaticallyAdjustsScrollIndicatorInsets
     >
       <FormRacs
-        racs={params?.racs}
+        racs={racs}
         acts={acts}
         loading={loadingForm}
         resetForm={loadingCreate}

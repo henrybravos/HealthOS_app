@@ -24,7 +24,7 @@ export default function Navigation() {
           component={ListRacsManagement}
           options={{
             headerTitleStyle: { fontSize: 14 },
-            title: 'Lista de RACS',
+            title: 'RACS',
           }}
         />
         <Drawer.Screen
