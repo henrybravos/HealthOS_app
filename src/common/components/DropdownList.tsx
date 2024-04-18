@@ -104,7 +104,7 @@ function DropdownList<T>({
         }}
         leadingIcon={itemSelected?.[keyIdRender] === '' ? 'check' : ''}
       />
-      {items.map((item) => {
+      {items?.map((item) => {
         const isSelected = itemSelected?.[keyIdRender] === item[keyIdRender]
         return (
           <Menu.Item
