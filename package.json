@@ -9,13 +9,17 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/drawer": "^6.6.15",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "expo": "~50.0.8",
+    "expo-image-picker": "~14.7.1",
     "expo-status-bar": "~1.11.1",
     "firebase": "^10.11.0",
     "react": "18.2.0",
     "react-native": "0.73.4",
-    "react-native-paper": "^5.12.3"
+    "react-native-gesture-handler": "~2.14.0",
+    "react-native-paper": "^5.12.3",
+    "react-native-reanimated": "~3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

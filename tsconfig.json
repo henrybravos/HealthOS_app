@@ -4,9 +4,10 @@
     "strict": true,
     "jsx": "react-jsx",
     "paths": {
-      "@context/*": ["./src/context/*"],
       "@common/*": ["./src/common/*"],
-      "@features/*": ["./src/features/*"]
+      "@assets/*": ["./src/common/assets/*"],
+      "@features/*": ["./src/features/*"],
+      "@core/*": ["./src/core/*"]
     }
   }
 }
