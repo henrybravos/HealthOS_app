@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native'
 import { useEffect } from 'react'
 import { View } from 'react-native'
-import { Surface, useTheme } from 'react-native-paper'
+import { useTheme } from 'react-native-paper'
 
 import { useFetchApi } from '@common/hooks'
 import { StackNavigation } from '@common/navigation/navigation.types'

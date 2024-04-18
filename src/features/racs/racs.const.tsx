@@ -17,13 +17,13 @@ const ActionsRacs = ({ racs }: { racs: Racs }) => {
     <View style={{ flexDirection: 'row', gap: -18, alignItems: 'center' }}>
       {racs.status === StatusRacs.PENDING ? (
         <IconButton
-          size={18}
+          size={20}
           icon="circle-edit-outline"
           iconColor={COLOR_RACS_PENDING}
           onPress={navigateToEdit}
         />
       ) : (
-        <IconButton size={18} icon="check-circle" iconColor={COLOR_RACS_CLOSE} />
+        <IconButton size={20} icon="check-circle" iconColor={COLOR_RACS_CLOSE} />
       )}
     </View>
   )
@@ -75,6 +75,6 @@ export const COLUMNS_RACS_TABLE: {
   {
     title: '',
     renderCell: (item) => <ActionsRacs racs={item} />,
-    flex: 0.65,
+    flex: 0.35,
   },
 ]
