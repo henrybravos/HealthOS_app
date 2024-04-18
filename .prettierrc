@@ -3,6 +3,7 @@
     "<THIRD_PARTY_MODULES>",
     "^@common/(.*)$",
     "^@features/(.*)$",
+    "^@core/(.*)$",
     "^@context/(.*)$",
     "^(?!.*[.]css$)[./].*$"
   ],
