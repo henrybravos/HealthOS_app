@@ -15,7 +15,7 @@ type DataTableProps<T> = Omit<React.ComponentProps<typeof DataTable>, 'children'
 }
 
 export function DataTableComponent<T>(props: DataTableProps<T>) {
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(0)
   const { items, columns, minHeight = 300 } = props
   const itemsPerPage = 10
   const startIndex = page * itemsPerPage
