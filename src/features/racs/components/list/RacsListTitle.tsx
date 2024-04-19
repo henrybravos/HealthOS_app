@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import { View } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
 
-import { SCREENS, StackNavigation } from '@common/navigation/navigation.types'
+import { SCREENS, StackNavigation } from '@navigation/navigation.types'
 
 const RacsListTitle = ({ sizeItems }: { sizeItems: number }) => {
   const navigation = useNavigation<StackNavigation>()

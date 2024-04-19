@@ -1,6 +1,6 @@
 import { NavigationProp } from '@react-navigation/native'
 
-import { Racs } from '@core/types'
+import { Racs } from '@core/types/racs'
 
 export enum SCREENS {
   LOGIN = 'Login',

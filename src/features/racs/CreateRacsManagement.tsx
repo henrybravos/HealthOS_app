@@ -4,7 +4,6 @@ import { ScrollView } from 'react-native'
 import { Snackbar } from 'react-native-paper'
 
 import { useFetchApi } from '@common/hooks'
-import { StackNavigation } from '@common/navigation/navigation.types'
 
 import {
   ActService,
@@ -14,6 +13,8 @@ import {
   PlaceService,
   RacsService,
 } from '@core/services'
+
+import { StackNavigation } from '@navigation/navigation.types'
 
 import { FormRacs } from './components/form'
 
