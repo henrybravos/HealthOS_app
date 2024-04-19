@@ -10,6 +10,7 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  orderBy,
   query,
   setDoc,
   where,
@@ -95,9 +96,13 @@ const getDocumentById = async <T>(collectionName: string, uuid: string): Promise
 const getDocumentsByQuery = async <T>(
   collectionName: string,
   queries: { fieldPath: string | FieldPath; op: WhereFilterOp; value: unknown }[],
+  orderByField: string | undefined,
 ): Promise<T[]> => {
   const wheres = queries.map((q) => where(q.fieldPath, q.op, q.value))
-  const q = query(collection(db, collectionName), ...wheres)
+  let q = query(collection(db, collectionName), ...wheres)
+  if (orderByField) {
+    q = query(collection(db, collectionName), ...wheres, orderBy('createdAt', 'desc'))
+  }
   const querySnapshot = await getDocs(q)
   return convertToEntity<T>(querySnapshot)
 }
@@ -113,13 +118,17 @@ const RacsService = {
     if (!user || !user.id) {
       throw new Error('User not found')
     }
-    return EntityService.getDocumentsByQuery<Racs>(COLLECTIONS.racs, [
-      {
-        fieldPath: 'user.id',
-        op: '==',
-        value: user.id,
-      },
-    ])
+    return EntityService.getDocumentsByQuery<Racs>(
+      COLLECTIONS.racs,
+      [
+        {
+          fieldPath: 'user.id',
+          op: '==',
+          value: user.id,
+        },
+      ],
+      'createdAt',
+    )
   },
   addDocument: async (data: Racs) => {
     return EntityService.addDocument(COLLECTIONS.racs, data)

@@ -24,12 +24,9 @@ const ListRacsManagement = () => {
     refreshRacs()
   }, [userExtra])
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      console.log('focus')
-      refreshRacs()
-    })
+    const unsubscribe = navigation.addListener('focus', refreshRacs)
     return unsubscribe
-  }, [navigation])
+  }, [navigation, userExtra])
   const refreshRacs = () => fetchGetRacs(userExtra)
 
   return (
