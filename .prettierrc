@@ -5,6 +5,8 @@
     "^@features/(.*)$",
     "^@core/(.*)$",
     "^@context/(.*)$",
+    "^@navigation/(.*)$",
+    "^@assets/(.*)$",
     "^(?!.*[.]css$)[./].*$"
   ],
   "importOrderGroupNamespaceSpecifiers": true,

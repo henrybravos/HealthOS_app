@@ -5,9 +5,12 @@
     "jsx": "react-jsx",
     "paths": {
       "@common/*": ["./src/common/*"],
-      "@assets/*": ["./src/common/assets/*"],
+      "@assets/*": ["./src/assets/*"],
       "@features/*": ["./src/features/*"],
-      "@core/*": ["./src/core/*"]
+      "@navigation/*": ["./src/navigation/*"],
+      "@core/*": ["./src/core/*"],
+      "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"]
+
     }
   }
 }

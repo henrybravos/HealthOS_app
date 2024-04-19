@@ -9,7 +9,9 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-navigation/drawer": "^6.6.15",
+    "@react-navigation/stack": "^6.3.29",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "expo": "~50.0.8",
     "expo-image-picker": "~14.7.1",
