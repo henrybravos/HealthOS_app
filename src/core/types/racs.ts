@@ -8,6 +8,7 @@ import {
   Place,
   UnsafeActCondition,
   User,
+  UserInfo,
 } from '@core/types'
 
 export enum StatusRacs {
@@ -30,7 +31,7 @@ export type Racs = {
   openAt?: Timestamp
   closeAt?: Timestamp
   act?: UnsafeActCondition
-  user: Partial<Omit<User, 'auth'>>
+  user: UserInfo
   type: TypeRacs
   place: Place
   company: Company

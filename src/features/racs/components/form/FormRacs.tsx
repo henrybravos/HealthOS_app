@@ -8,7 +8,6 @@ import { useCreateRacs } from '@features/racs/hooks/useCreateRacs'
 import {
   Company,
   EventType,
-  Occupation,
   Place,
   Racs,
   StatusRacs,

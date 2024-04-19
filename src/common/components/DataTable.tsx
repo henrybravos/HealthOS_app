@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { View } from 'react-native'
 import { RefreshControl, ScrollView } from 'react-native-gesture-handler'
-import { DataTable, ProgressBar } from 'react-native-paper'
+import { DataTable, Icon, ProgressBar, Text } from 'react-native-paper'
 
 type DataTableProps<T> = Omit<React.ComponentProps<typeof DataTable>, 'children'> & {
   items: Partial<T>[]
@@ -65,6 +65,14 @@ export function DataTableComponent<T>(props: DataTableProps<T>) {
                   })}
                 </DataTable.Row>
               ))}
+              {items.length === 0 && (
+                <View
+                  style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: 500 }}
+                >
+                  <Icon source="alert-circle" size={40} color="grey" />
+                  <Text variant="bodySmall">No hay datos</Text>
+                </View>
+              )}
             </View>
           </ScrollView>
         </View>

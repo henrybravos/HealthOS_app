@@ -3,9 +3,10 @@ import { View } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
 
 import { COLOR_CLASSIFICATION, COLOR_RACS_CLOSE, COLOR_RACS_PENDING } from '@common/const/colors'
-import { SCREENS, StackNavigation } from '@common/navigation/navigation.types'
 
 import { Racs, StatusRacs } from '@core/types'
+
+import { SCREENS, StackNavigation } from '@navigation/navigation.types'
 
 const ActionsRacs = ({ racs }: { racs: Racs }) => {
   const navigation = useNavigation<StackNavigation>()

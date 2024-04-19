@@ -1,11 +1,22 @@
+import { Occupation } from '@core/types/occupations'
+
 export type Auth = {
-  user: string
-  password: string
+  email: string
+  token: string
+  refreshToken: string
+  expirationTime: number
 }
 export type User = {
   id: string
-  name: string
-  surname: string
-  email: string
+  displayName: string
   auth: Auth
+}
+export type UserInfo = {
+  id: string
+  name: string
+  email: string
+  surname: string
+  phone: string
+  address: string
+  occupation: Occupation
 }

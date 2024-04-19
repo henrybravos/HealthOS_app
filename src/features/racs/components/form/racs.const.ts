@@ -52,10 +52,4 @@ export const initialRacs: Partial<Racs> = {
   status: StatusRacs.PENDING,
   classification: ClassificationEvent.LOW,
   type: TypeRacs.GOOD_PRACTICE,
-  user: {
-    id: '1',
-    email: 'hbravos@gmail.com',
-    name: 'Henry',
-    surname: 'Bravo',
-  },
 }

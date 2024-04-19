@@ -1,3 +1,4 @@
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import {
   DocumentData,
   FieldPath,
@@ -6,6 +7,7 @@ import {
   addDoc,
   collection,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -14,15 +16,24 @@ import {
 } from 'firebase/firestore'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
-import { appFirebase } from '@common/config'
+import { app } from '@common/config'
+import { auth } from '@common/config/firebaseConfig'
 import { COLLECTIONS } from '@common/const/collections'
 
-import { Company, EventType, Occupation, Place, Racs, UnsafeActCondition, User } from '@core/types'
+import {
+  Company,
+  EventType,
+  Occupation,
+  Place,
+  Racs,
+  UnsafeActCondition,
+  User,
+  UserInfo,
+} from '@core/types'
 
-global.Buffer = require('buffer').Buffer
+const db = getFirestore(app!)
+const storage = getStorage(app)
 
-const db = getFirestore(appFirebase)
-const storage = getStorage(appFirebase)
 const convertToEntity = <T>(querySnapshot: QuerySnapshot<DocumentData, DocumentData>): T[] => {
   const documents: T[] = []
   querySnapshot.forEach((doc) => {
@@ -68,7 +79,19 @@ const getAllDocuments = async <T>(collectionName: string): Promise<T[]> => {
   const querySnapshot = await getDocs(collection(db, collectionName))
   return convertToEntity<T>(querySnapshot)
 }
+const getDocumentById = async <T>(collectionName: string, uuid: string): Promise<T | null> => {
+  const docRef = doc(db, collectionName, uuid)
+  const docSnap = await getDoc(docRef)
 
+  if (docSnap.exists()) {
+    return {
+      id: docSnap.id,
+      ...docSnap.data(),
+    } as T
+  } else {
+    return null
+  }
+}
 const getDocumentsByQuery = async <T>(
   collectionName: string,
   queries: { fieldPath: string | FieldPath; op: WhereFilterOp; value: unknown }[],
@@ -81,11 +104,15 @@ const getDocumentsByQuery = async <T>(
 const EntityService = {
   getAllDocuments,
   getDocumentsByQuery,
+  getDocumentById,
   addDocument,
   setDocument,
 }
 const RacsService = {
-  getRacsByUser: async (user: User) => {
+  getRacsByUser: async (user: UserInfo) => {
+    if (!user || !user.id) {
+      throw new Error('User not found')
+    }
     return EntityService.getDocumentsByQuery<Racs>(COLLECTIONS.racs, [
       {
         fieldPath: 'user.id',
@@ -132,6 +159,22 @@ const EventTypeService = {
     return EntityService.getAllDocuments<EventType>(COLLECTIONS.eventTypes)
   },
 }
+const AuthService = {
+  signIn: async ({ email, password }: { email: string; password: string }) => {
+    if (!auth) return
+    const responseAuth = await signInWithEmailAndPassword(auth, email, password)
+    return responseAuth
+  },
+  signOut: async () => {
+    if (!auth) return
+    await signOut(auth)
+    return true
+  },
+  getExtraData: async ({ uuid }: { uuid: string }) => {
+    const extra = await EntityService.getDocumentById<UserInfo>(COLLECTIONS.usersExtra, uuid)
+    return extra
+  },
+}
 export {
   EntityService,
   OccupationService,
@@ -141,4 +184,5 @@ export {
   PlaceService,
   EventTypeService,
   RacsService,
+  AuthService,
 }

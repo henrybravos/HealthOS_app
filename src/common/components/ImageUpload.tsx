@@ -3,7 +3,7 @@ import { IconButton, ProgressBar, Surface, Text, useTheme } from 'react-native-p
 
 import { useImagePicker } from '@common/hooks'
 
-const defaultImage = require('@assets/img/camera.png')
+const defaultImage = require('@common/assets/images/camera.png')
 type ImageUploadProps = Omit<ImageProps, 'source'> & {
   callbackSelectImage?: (image: string | null) => void
   description?: string

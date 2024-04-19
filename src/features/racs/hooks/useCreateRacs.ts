@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { useFirebaseContext } from '@common/context'
 import { convertDate, generateId, getExtensionFromUri } from '@common/helpers/utils'
 
 import { initialRacs } from '@features/racs/components/form/racs.const'
@@ -18,6 +19,7 @@ export const useCreateRacs = ({ resetForm, handleCreateRacs, racsDB }: UseCreate
   const [loadingUpload, setLoadingUpload] = useState(false)
   const [uriEvidence, setUriEvidence] = useState<string | null>(null)
   const [racs, setRacs] = useState<Partial<Racs>>(initialRacs)
+  const { userExtra } = useFirebaseContext()
   const isClosed = racs.status === StatusRacs.CLOSED
   const modeCreate = !racs.id
 
@@ -64,7 +66,7 @@ export const useCreateRacs = ({ resetForm, handleCreateRacs, racsDB }: UseCreate
   }
   const createOrUpdateRacs = async () => {
     if (!validateRacs() || !uriEvidence) return
-
+    if (!userExtra || !userExtra.id) return
     const docId = racs.id || generateId()
     const fileExt = getExtensionFromUri(uriEvidence)
     const keyEvidence = isClosed ? 'closeUri' : 'openUri'
@@ -89,6 +91,7 @@ export const useCreateRacs = ({ resetForm, handleCreateRacs, racsDB }: UseCreate
     if (isClosed) {
       racsUpload.closeAt = convertDate(new Date())
     }
+    racsUpload.user = userExtra
     handleCreateRacs({
       data: racsUpload,
       uuid: docId,
