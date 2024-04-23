@@ -31,6 +31,8 @@ import {
   UserInfo,
 } from '@core/types'
 
+export type WhereQuery = { fieldPath: string | FieldPath; op: WhereFilterOp; value: unknown }
+
 const convertToEntity = <T>(querySnapshot: QuerySnapshot<DocumentData, DocumentData>): T[] => {
   const documents: T[] = []
   querySnapshot.forEach((doc) => {
@@ -106,7 +108,7 @@ const getDocumentById = async <T>(collectionName: string, uuid: string): Promise
 }
 const getDocumentsByQuery = async <T>(
   collectionName: string,
-  queries: { fieldPath: string | FieldPath; op: WhereFilterOp; value: unknown }[],
+  queries: WhereQuery[],
   orderByField: string | undefined,
 ): Promise<T[]> => {
   const wheres = queries.map((q) => where(q.fieldPath, q.op, q.value))
@@ -191,9 +193,21 @@ const AuthService = {
     await signOut(auth)
     return true
   },
-  getExtraData: async ({ uuid }: { uuid: string }) => {
-    const extra = await EntityService.getDocumentById<UserInfo>(COLLECTIONS.usersExtra, uuid)
-    return extra
+  getExtraData: async ({ authId }: { authId: string }) => {
+    const where: WhereQuery[] = [
+      {
+        fieldPath: 'authId',
+        op: '==',
+        value: authId,
+      },
+    ]
+    const extra = await EntityService.getDocumentsByQuery<UserInfo>(
+      COLLECTIONS.usersExtra,
+      where,
+      undefined,
+    )
+    if (extra.length === 0) return null
+    return extra[0]
   },
 }
 export {

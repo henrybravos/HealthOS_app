@@ -1,15 +1,9 @@
 import { createContext, useContext } from 'react'
 
-import { User, UserInfo } from '@core/types'
+import { useAuthentication } from '@common/hooks/useAuthentication'
 
-type AppContextType = {
-  userAuth?: User
-  isAuthenticating: boolean
-  loadingAuth: boolean
-  userExtra?: UserInfo
-  handleSignOut: () => void
-}
-export const AppContext = createContext<AppContextType | null>(null)
+type AppContext = ReturnType<typeof useAuthentication>
+export const AppContext = createContext<AppContext | null>(null)
 
 export const useAppContext = () => {
   const ctx = useContext(AppContext)
