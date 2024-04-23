@@ -6,7 +6,7 @@ import { View } from 'react-native'
 import { Button, Icon, ProgressBar, Text, useTheme } from 'react-native-paper'
 
 import LoadingScreen from '@common/components/LoadingScreen'
-import { useFirebaseContext } from '@common/context'
+import { useAppContext } from '@common/context'
 
 import LoginManagement from '@features/login/LoginManagement'
 import CreateRacsManagement from '@features/racs/CreateRacsManagement'
@@ -18,7 +18,7 @@ const Stack = createStackNavigator<RootStackParamList>()
 export default () => {
   const { setOptions, dispatch } = useNavigation()
   const theme = useTheme()
-  const { isAuthenticating, loadingAuth } = useFirebaseContext()
+  const { isAuthenticating, loadingAuth } = useAppContext()
   useEffect(() => setOptions({ gestureEnabled: isAuthenticating }), [isAuthenticating, setOptions])
   if (loadingAuth) {
     return <LoadingScreen />

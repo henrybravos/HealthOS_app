@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useCallback, useEffect, useState } from 'react'
 
 import * as regex from '@common/helpers/regex'
-import { useFirebaseContext } from '@common/context'
+import { useAppContext } from '@common/context'
 import { useFetchApi } from '@common/hooks'
 
 import { AuthService } from '@core/services'
@@ -17,7 +17,7 @@ const initAuth = {
 }
 
 export const useAuth = () => {
-  const { isAuthenticating } = useFirebaseContext()
+  const { isAuthenticating } = useAppContext()
   const navigation = useNavigation<StackNavigation>()
   const [authInput, setAuthInput] = useState(initAuth)
   const [loadingSignIn, authResponse, fetchLogin, errorSignIn, resetData] = useFetchApi(

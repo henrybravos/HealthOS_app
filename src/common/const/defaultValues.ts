@@ -1,4 +1,4 @@
-export const INITIAL_EVENTS = [
+export const EVENTS = [
   {
     name: 'HABITACIONES Y CAMPAMENTO',
   },
@@ -93,7 +93,6 @@ export const UNSAFE_ACTS = [
   { name: 'Usar equipo inadecuadamente' },
   { name: 'Otro acto que no ha sido clasificado' },
 ]
-
 export const UNSAFE_CONDITIONS = [
   { name: 'Falta o inadecuado uso de guardas, barreras, bermas, barricadas, etc.' },
   { name: 'Inestabilidad de paredes altas, techos, etc.' },
@@ -113,4 +112,53 @@ export const UNSAFE_CONDITIONS = [
   { name: 'Peligro ergonómico' },
   { name: 'Inadecuada o excesiva iluminación' },
   { name: 'Otras condiciones que no han sido clasificadas' },
+]
+export const PLACES = [
+  { name: 'NAVE WARE HOUSE ' },
+  { name: 'PLATAFORMA 3 ' },
+  { name: 'PLATAFORMA 4 ' },
+  { name: 'PLATAFORMA 5' },
+  { name: 'PLATAFORMA 6 ' },
+  { name: 'PLATAFORMA 7' },
+  { name: 'PLATAFORMA 8' },
+  { name: 'PLATAFORMA 9' },
+  { name: 'PLATAFORMA 10 ' },
+  { name: 'PLATAFORMA 11 ' },
+  { name: 'WH CARPA 1 ' },
+  { name: 'WH CARPA 2 ' },
+  { name: 'WH CARPA 3 ' },
+  { name: 'WH CARPA 4 ' },
+  { name: 'CAMPAMENTO SALVIANI ' },
+  { name: 'PLANTA CONCENTRADORA' },
+  { name: 'QUELLAVECO' },
+  { name: 'T5 PAPUJUE ' },
+  { name: 'T7 PAPUJUNE' },
+  { name: 'CORTADERAS ' },
+  { name: 'MOQUEGUA' },
+  { name: 'ALMACÉN PUERTO ILO' },
+]
+export const COMPANIES = [
+  { name: 'AAQ' },
+  { name: 'NOATUM' },
+  { name: 'HAGEMSA' },
+  { name: 'TIXAN' },
+  { name: 'ISUR ' },
+  { name: 'VANTAZ ' },
+  { name: 'ECOP' },
+  { name: 'EQUANS' },
+  { name: 'SODEXO' },
+  { name: 'CUMBRA' },
+  { name: 'G&T' },
+]
+export const OCCUPATIONS = [
+  { name: 'ALMACENERO ' },
+  { name: 'COORDINADOR DESPACHO ' },
+  { name: 'COORDINADOR RECEPCIÓN ' },
+  { name: 'COORDINADOR PRESERVACIÓN' },
+  { name: 'SUPERVISOR HSEQ ' },
+  { name: 'SUPERVISOR ALMACÉN' },
+  { name: 'JEFE DE ALMACÉN ' },
+  { name: 'SUPER INTENDENTE ' },
+  { name: 'COORDINADOR DE OPERACIONES' },
+  { name: 'PRACTICANTE DE ALMACENES' },
 ]

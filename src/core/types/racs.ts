@@ -4,10 +4,8 @@ import {
   ClassificationEvent,
   Company,
   EventType,
-  Occupation,
   Place,
   UnsafeActCondition,
-  User,
   UserInfo,
 } from '@core/types'
 
@@ -16,8 +14,8 @@ export enum StatusRacs {
   PENDING = 'PENDIENTE',
 }
 export enum TypeRacs {
-  ACT = 'ACTO SUB.',
-  CONDITION = 'CONDICIÓN SUBÉSTANTAR',
+  ACT = 'ACTO SUBÉSTANDAR',
+  CONDITION = 'CONDICIÓN SUBÉSTANDAR',
   INCIDENT = 'INCIDENTE',
   GOOD_PRACTICE = 'BUENA PRÁCTICA',
 }

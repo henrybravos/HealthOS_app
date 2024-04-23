@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useFirebaseContext } from '@common/context'
+import { useAppContext } from '@common/context'
 import { convertDate, generateId, getExtensionFromUri } from '@common/helpers/utils'
 
 import { initialRacs } from '@features/racs/components/form/racs.const'
@@ -19,7 +19,7 @@ export const useCreateRacs = ({ resetForm, handleCreateRacs, racsDB }: UseCreate
   const [loadingUpload, setLoadingUpload] = useState(false)
   const [uriEvidence, setUriEvidence] = useState<string | null>(null)
   const [racs, setRacs] = useState<Partial<Racs>>(initialRacs)
-  const { userExtra } = useFirebaseContext()
+  const { userExtra } = useAppContext()
   const isClosed = racs.status === StatusRacs.CLOSED
   const modeCreate = !racs.id
 

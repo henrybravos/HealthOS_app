@@ -1,18 +1,15 @@
 import { onAuthStateChanged } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
 import { ReactElement, useEffect, useState } from 'react'
 
-import { app, auth } from '@common/config'
+import { auth } from '@common/config'
 import { useFetchApi } from '@common/hooks'
 
 import { AuthService } from '@core/services'
 import { User, UserInfo } from '@core/types'
 
-import { FirebaseContext } from './useFirebaseContext'
+import { AppContext } from './useAppContext'
 
-const db = getFirestore(app!)
-
-export const FirebaseAppProvider = ({ children }: { children: ReactElement }) => {
+export const AppProvider = ({ children }: { children: ReactElement }) => {
   const [userAuth, setUserAuth] = useState<User | undefined>(undefined)
   const [userInfo, setUserInfo] = useState<UserInfo | undefined>(undefined)
   const [loadingExtra, setLoadingExtra] = useState(false)
@@ -63,10 +60,8 @@ export const FirebaseAppProvider = ({ children }: { children: ReactElement }) =>
   }
 
   return (
-    <FirebaseContext.Provider
+    <AppContext.Provider
       value={{
-        db,
-        app: app!,
         loadingAuth: loadingAuth || loadingExtra,
         isAuthenticating: !!userAuth?.id,
         userAuth: userAuth,
@@ -75,6 +70,6 @@ export const FirebaseAppProvider = ({ children }: { children: ReactElement }) =>
       }}
     >
       {children}
-    </FirebaseContext.Provider>
+    </AppContext.Provider>
   )
 }

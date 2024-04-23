@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
 import { Button, Divider, Text, useTheme } from 'react-native-paper'
 
-import { useFirebaseContext } from '@common/context'
+import { useAppContext } from '@common/context'
 
 import { SCREENS } from '@navigation/navigation.types'
 
@@ -66,7 +66,7 @@ const ScreensStack = () => {
 const DrawerContentCustom = (props: DrawerContentComponentProps) => {
   const { navigation } = props
   const { colors } = useTheme()
-  const { isAuthenticating, userExtra, handleSignOut } = useFirebaseContext()
+  const { isAuthenticating, userExtra, handleSignOut } = useAppContext()
 
   const state = navigation.getState()
   const route = state.routes[state.index]
@@ -144,7 +144,7 @@ const DrawerContentCustom = (props: DrawerContentComponentProps) => {
 }
 
 export default () => {
-  const { isAuthenticating } = useFirebaseContext()
+  const { isAuthenticating } = useAppContext()
   return (
     <View style={{ flex: 1 }}>
       <Drawer.Navigator

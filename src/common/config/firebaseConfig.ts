@@ -1,18 +1,35 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { FirebaseApp, getApp, getApps, initializeApp } from 'firebase/app'
-import { Auth, getAuth, getReactNativePersistence, initializeAuth } from 'firebase/auth'
+import {
+  Auth,
+  connectAuthEmulator,
+  getAuth,
+  getReactNativePersistence,
+  initializeAuth,
+} from 'firebase/auth'
+import {
+  Firestore,
+  connectFirestoreEmulator,
+  getFirestore,
+  initializeFirestore,
+} from 'firebase/firestore'
+import { FirebaseStorage, getStorage } from 'firebase/storage'
+
+const env = process.env
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCZijf4WCOYgv-7x_Tu715RkPuMTtRQMkc',
-  authDomain: 'noatum-app.firebaseapp.com',
-  projectId: 'noatum-app',
-  storageBucket: 'noatum-app.appspot.com',
-  messagingSenderId: '470218412563',
-  appId: '1:470218412563:web:0f8b71aeafc7be9e3225e6',
-  measurementId: 'G-FNVD1F1MZC',
+  apiKey: env.EXPO_PUBLIC_API_KEY,
+  authDomain: env.EXPO_PUBLIC_AUTH_DOMAIN,
+  projectId: env.EXPO_PUBLIC_PROJECT_ID,
+  storageBucket: env.EXPO_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: env.EXPO_PUBLIC_MESSAGING_SENDER_ID,
+  appId: env.EXPO_PUBLIC_APP_ID,
+  measurementId: env.EXPO_PUBLIC_MEASUREMENT_ID,
 }
-
-let app: FirebaseApp | undefined, auth: Auth | undefined
+let app: FirebaseApp | undefined,
+  auth: Auth | undefined,
+  db: Firestore | undefined,
+  storage: FirebaseStorage | undefined
 
 if (!getApps().length) {
   try {
@@ -20,11 +37,19 @@ if (!getApps().length) {
     auth = initializeAuth(app, {
       persistence: getReactNativePersistence(AsyncStorage),
     })
+    db = initializeFirestore(app, {})
+    storage = getStorage(app)
   } catch (error) {
     console.log('Error initializing app: ' + error)
   }
 } else {
   app = getApp()
   auth = getAuth(app)
+  db = getFirestore(app!)
+  storage = getStorage(app)
 }
-export { app, auth, getApp, getAuth }
+if (env.NODE_ENV === 'development') {
+  connectFirestoreEmulator(db!, '192.168.1.42', 8080)
+  connectAuthEmulator(auth!, 'http://192.168.1.42:9099', { disableWarnings: true })
+}
+export { app, auth, db, storage, getApp, getAuth }

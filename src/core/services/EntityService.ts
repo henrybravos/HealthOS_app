@@ -1,4 +1,4 @@
-import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import {
   DocumentData,
   FieldPath,
@@ -9,17 +9,17 @@ import {
   doc,
   getDoc,
   getDocs,
-  getFirestore,
   orderBy,
   query,
   setDoc,
   where,
+  writeBatch,
 } from 'firebase/firestore'
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
-import { app } from '@common/config'
-import { auth } from '@common/config/firebaseConfig'
+import { auth, db, storage } from '@common/config'
 import { COLLECTIONS } from '@common/const/collections'
+import { generateId } from '@common/helpers'
 
 import {
   Company,
@@ -28,12 +28,8 @@ import {
   Place,
   Racs,
   UnsafeActCondition,
-  User,
   UserInfo,
 } from '@core/types'
-
-const db = getFirestore(app!)
-const storage = getStorage(app)
 
 const convertToEntity = <T>(querySnapshot: QuerySnapshot<DocumentData, DocumentData>): T[] => {
   const documents: T[] = []
@@ -47,7 +43,7 @@ const convertToEntity = <T>(querySnapshot: QuerySnapshot<DocumentData, DocumentD
   return documents || []
 }
 export const uploadFile = async ({ path, uri }: { uri: string; path: string }): Promise<string> => {
-  const storageRef = ref(storage, path)
+  const storageRef = ref(storage!, path)
   console.log('Uri', uri)
   try {
     const response = await fetch(uri)
@@ -63,25 +59,40 @@ export const uploadFile = async ({ path, uri }: { uri: string; path: string }): 
   }
 }
 const addDocument = async <T>(collectionName: string, data: T): Promise<T> => {
-  const docRef = await addDoc(collection(db, collectionName), data as unknown)
+  const docRef = await addDoc(collection(db!, collectionName), data as unknown)
   return {
     id: docRef.id,
     ...data,
   }
 }
+const addManyDocuments = async <T extends { id?: string }>(
+  collectionName: string,
+  data: Partial<T>[],
+): Promise<Partial<T>[]> => {
+  const batch = writeBatch(db!)
+  data.forEach((d) => {
+    const id = generateId()
+    d.id = id
+    const nycRef = doc(db!, collectionName, id)
+    batch.set(nycRef, d as unknown)
+  })
+  await batch.commit()
+  return data
+}
+
 const setDocument = async <T>(collectionName: string, data: T, uuid: string): Promise<T> => {
-  await setDoc(doc(db, collectionName, uuid), data as unknown)
+  await setDoc(doc(db!, collectionName, uuid), data as unknown)
   return {
     id: uuid,
     ...data,
   }
 }
 const getAllDocuments = async <T>(collectionName: string): Promise<T[]> => {
-  const querySnapshot = await getDocs(collection(db, collectionName))
+  const querySnapshot = await getDocs(collection(db!, collectionName))
   return convertToEntity<T>(querySnapshot)
 }
 const getDocumentById = async <T>(collectionName: string, uuid: string): Promise<T | null> => {
-  const docRef = doc(db, collectionName, uuid)
+  const docRef = doc(db!, collectionName, uuid)
   const docSnap = await getDoc(docRef)
 
   if (docSnap.exists()) {
@@ -99,9 +110,9 @@ const getDocumentsByQuery = async <T>(
   orderByField: string | undefined,
 ): Promise<T[]> => {
   const wheres = queries.map((q) => where(q.fieldPath, q.op, q.value))
-  let q = query(collection(db, collectionName), ...wheres)
+  let q = query(collection(db!, collectionName), ...wheres)
   if (orderByField) {
-    q = query(collection(db, collectionName), ...wheres, orderBy('createdAt', 'desc'))
+    q = query(collection(db!, collectionName), ...wheres, orderBy('createdAt', 'desc'))
   }
   const querySnapshot = await getDocs(q)
   return convertToEntity<T>(querySnapshot)
@@ -111,6 +122,7 @@ const EntityService = {
   getDocumentsByQuery,
   getDocumentById,
   addDocument,
+  addManyDocuments,
   setDocument,
 }
 const RacsService = {
