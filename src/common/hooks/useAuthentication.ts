@@ -1,9 +1,9 @@
 import { onAuthStateChanged } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 
-import { auth } from '@common/config'
 import useFetchApi from '@common/hooks/useFetchApi'
 
+import { auth } from '@core/config'
 import { AuthService } from '@core/services'
 import { User, UserInfo } from '@core/types'
 

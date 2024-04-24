@@ -49,6 +49,9 @@ export const useAuth = () => {
     }, 10)
   }
   const handleSignIn = useCallback(() => {
+    if (!regex.email.test(authInput.email) || authInput.password.length < 5) {
+      return
+    }
     fetchLogin(authInput)
   }, [authInput.email, authInput.password])
 

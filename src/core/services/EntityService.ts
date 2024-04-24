@@ -17,10 +17,10 @@ import {
 } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
-import { auth, db, storage } from '@common/config'
 import { COLLECTIONS } from '@common/const/collections'
 import { generateId } from '@common/helpers'
 
+import { auth, db, storage } from '@core/config'
 import {
   Company,
   EventType,

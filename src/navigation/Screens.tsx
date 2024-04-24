@@ -18,9 +18,9 @@ const Stack = createStackNavigator<RootStackParamList>()
 export default () => {
   const { setOptions, dispatch } = useNavigation()
   const theme = useTheme()
-  const { isAuthenticating, loadingAuth } = useAppContext()
+  const { isAuthenticating, isLoading } = useAppContext()
   useEffect(() => setOptions({ gestureEnabled: isAuthenticating }), [isAuthenticating, setOptions])
-  if (loadingAuth) {
+  if (isLoading) {
     return <LoadingScreen />
   }
   return (

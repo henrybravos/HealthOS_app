@@ -65,7 +65,7 @@ const LoginManagement = () => {
             </Surface>
           </View>
           <Text variant="bodySmall" style={styles.copyright}>
-            © {new Date().getFullYear()}
+            {process.env.NODE_ENV} © {new Date().getFullYear()}
           </Text>
         </View>
       </View>
