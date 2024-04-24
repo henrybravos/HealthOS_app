@@ -57,5 +57,8 @@ const configureFirebase = () => {
 
   return { app, auth, db, storage, getApp, getAuth }
 }
-
-export { configureFirebase }
+if (env.NODE_ENV === 'development') {
+  //connectFirestoreEmulator(db!, '192.168.1.37', 8080)
+  //connectAuthEmulator(auth!, 'http://192.168.1.37:9099', { disableWarnings: true })
+}
+export { app, auth, db, storage, getApp, getAuth }
