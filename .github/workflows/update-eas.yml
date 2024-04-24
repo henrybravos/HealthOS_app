@@ -25,4 +25,4 @@ jobs:
         run: npm install
 
       - name: 🚀 Create update
-        run: eas update --auto --non-interactive
+        run: EXPO_PUBLIC_API_KEY=hola eas update --auto --non-interactive
