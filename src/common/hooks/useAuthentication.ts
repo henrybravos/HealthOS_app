@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 
 import useFetchApi from '@common/hooks/useFetchApi'
 
-import { auth } from '@core/config'
+import { configureFirebase } from '@core/config'
 import { AuthService } from '@core/services'
 import { User, UserInfo } from '@core/types'
 
@@ -12,7 +12,7 @@ const useAuthentication = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | undefined>(undefined)
   const [loadingExtra, setLoadingExtra] = useState(false)
   const [_, __, fetchSignOut] = useFetchApi(AuthService.signOut)
-
+  const { auth } = configureFirebase()
   const [loadingAuth, setLoadingAuth] = useState(true)
   useEffect(() => {
     if (auth) {

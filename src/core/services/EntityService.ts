@@ -20,7 +20,7 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { COLLECTIONS } from '@common/const/collections'
 import { generateId } from '@common/helpers'
 
-import { auth, db, storage } from '@core/config'
+import { configureFirebase } from '@core/config'
 import {
   Company,
   EventType,
@@ -30,6 +30,8 @@ import {
   UnsafeActCondition,
   UserInfo,
 } from '@core/types'
+
+const { auth, db, storage } = configureFirebase()
 
 export type WhereQuery = { fieldPath: string | FieldPath; op: WhereFilterOp; value: unknown }
 
