@@ -26,6 +26,7 @@ const firebaseConfig = {
   appId: env.EXPO_PUBLIC_APP_ID,
   measurementId: env.EXPO_PUBLIC_MEASUREMENT_ID,
 }
+console.log('firebaseConfig: ', firebaseConfig)
 let app: FirebaseApp | undefined,
   auth: Auth | undefined,
   db: Firestore | undefined,
@@ -49,7 +50,7 @@ if (!getApps().length) {
   storage = getStorage(app)
 }
 if (env.NODE_ENV === 'development') {
-  connectFirestoreEmulator(db!, '192.168.1.37', 8080)
-  connectAuthEmulator(auth!, 'http://192.168.1.37:9099', { disableWarnings: true })
+  //connectFirestoreEmulator(db!, '192.168.1.37', 8080)
+  //connectAuthEmulator(auth!, 'http://192.168.1.37:9099', { disableWarnings: true })
 }
 export { app, auth, db, storage, getApp, getAuth }
