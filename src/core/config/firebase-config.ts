@@ -15,16 +15,14 @@ import {
 } from 'firebase/firestore'
 import { FirebaseStorage, getStorage } from 'firebase/storage'
 
-const env = process.env
-
 const firebaseConfig = {
-  apiKey: env.EXPO_PUBLIC_API_KEY,
-  authDomain: env.EXPO_PUBLIC_AUTH_DOMAIN,
-  projectId: env.EXPO_PUBLIC_PROJECT_ID,
-  storageBucket: env.EXPO_PUBLIC_STORAGE_BUCKET,
-  messagingSenderId: env.EXPO_PUBLIC_MESSAGING_SENDER_ID,
-  appId: env.EXPO_PUBLIC_APP_ID,
-  measurementId: env.EXPO_PUBLIC_MEASUREMENT_ID,
+  apiKey: process.env.EXPO_PUBLIC_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_APP_ID,
+  measurementId: process.env.EXPO_PUBLIC_MEASUREMENT_ID,
 }
 console.log('firebaseConfig: ', firebaseConfig)
 let app: FirebaseApp | undefined,
@@ -49,8 +47,8 @@ if (!getApps().length) {
   db = getFirestore(app!)
   storage = getStorage(app)
 }
-if (env.NODE_ENV === 'development') {
-  //connectFirestoreEmulator(db!, '192.168.1.37', 8080)
-  //connectAuthEmulator(auth!, 'http://192.168.1.37:9099', { disableWarnings: true })
+if (process.env.NODE_ENV === 'development') {
+  connectFirestoreEmulator(db!, '192.168.1.37', 8080)
+  connectAuthEmulator(auth!, 'http://192.168.1.37:9099', { disableWarnings: true })
 }
 export { app, auth, db, storage, getApp, getAuth }
