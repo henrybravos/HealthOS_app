@@ -6,8 +6,10 @@ const LoadingScreen = () => {
   const theme = useTheme()
   return (
     <View style={styles.container}>
-      <Text>Loading...</Text>
       <ProgressBar style={{ width: WIDTH }} visible indeterminate color={theme.colors.primary} />
+      <Text variant="bodySmall" style={styles.copyright}>
+        {process.env.EXPO_PUBLIC_API_KEY} © {new Date().getFullYear()}
+      </Text>
     </View>
   )
 }
@@ -19,5 +21,6 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
   },
+  copyright: { textAlign: 'center', marginTop: 8 },
 })
 export default LoadingScreen

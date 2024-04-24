@@ -49,7 +49,7 @@ if (!getApps().length) {
   storage = getStorage(app)
 }
 if (env.NODE_ENV === 'development') {
-  connectFirestoreEmulator(db!, '192.168.1.42', 8080)
-  connectAuthEmulator(auth!, 'http://192.168.1.42:9099', { disableWarnings: true })
+  connectFirestoreEmulator(db!, '192.168.1.37', 8080)
+  connectAuthEmulator(auth!, 'http://192.168.1.37:9099', { disableWarnings: true })
 }
 export { app, auth, db, storage, getApp, getAuth }
