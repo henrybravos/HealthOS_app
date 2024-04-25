@@ -24,7 +24,6 @@ const firebaseConfig = {
   appId: process.env.EXPO_PUBLIC_APP_ID,
   measurementId: process.env.EXPO_PUBLIC_MEASUREMENT_ID,
 }
-console.log('firebaseConfig====>>>>>>>: ', firebaseConfig)
 let app: FirebaseApp | undefined,
   auth: Auth | undefined,
   db: Firestore | undefined,
