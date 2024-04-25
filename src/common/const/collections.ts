@@ -7,4 +7,6 @@ export const COLLECTIONS = {
   unsafeActs: 'unsafe_acts',
   racs: 'racs',
   unsafeConditions: 'unsafe_conditions',
+  config: 'config',
+  reports: 'reports',
 }
