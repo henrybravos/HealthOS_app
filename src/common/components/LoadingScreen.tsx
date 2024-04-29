@@ -8,7 +8,7 @@ const LoadingScreen = () => {
     <View style={styles.container}>
       <ProgressBar style={{ width: WIDTH }} visible indeterminate color={theme.colors.primary} />
       <Text variant="bodySmall" style={styles.copyright}>
-        {process.env.NODE_ENV} © {new Date().getFullYear()}
+        {process.env.NODE_ENV} {process.env.EXPO_PUBLIC_PROJECT_ID} © {new Date().getFullYear()}
       </Text>
     </View>
   )
