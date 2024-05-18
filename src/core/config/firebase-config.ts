@@ -39,10 +39,10 @@ const configureFirebase = () => {
       db = initializeFirestore(app, {})
       storage = getStorage(app)
       if (process.env.NODE_ENV === 'development') {
-        connectFirestoreEmulator(db!, process.env.EXPO_PUBLIC_SERVER_LOCAL || '', 8080)
+        /* connectFirestoreEmulator(db!, process.env.EXPO_PUBLIC_SERVER_LOCAL || '', 8080)
         connectAuthEmulator(auth!, `http://${process.env.EXPO_PUBLIC_SERVER_LOCAL}:9099`, {
           disableWarnings: true,
-        })
+        })*/
       }
     } catch (error) {
       console.log('Error initializing app: ' + error)

@@ -10,6 +10,10 @@ export type OptionSelected = {
   id: string
   label: string
 }
+const otherOption = {
+  id: 'OTHER',
+  name: 'OTRO',
+}
 type DropdownListProps<T> = {
   items: T[]
   defaultOptionSelected?: T
@@ -19,10 +23,12 @@ type DropdownListProps<T> = {
   keyIdRender: keyof T
   itemSelected?: T | null
   error?: boolean
+  enableOther?: boolean
   callbackSelectedItem: (item: T | null) => void
 }
 function DropdownList<T>({
   error = false,
+  enableOther = false,
   items = [],
   defaultOptionSelected,
   keyIdRender,
@@ -127,6 +133,23 @@ function DropdownList<T>({
           />
         )
       })}
+      <Menu.Item
+        onPress={handleItemSelected(otherOption as T)}
+        title={otherOption.name}
+        titleStyle={{
+          fontSize: 12,
+        }}
+        dense
+        contentStyle={{
+          padding: 0,
+          marginLeft: itemSelected?.[keyIdRender] === 'OTHER' ? 0 : -8,
+        }}
+        style={{
+          marginLeft: itemSelected?.[keyIdRender] === 'OTHER' ? 0 : 32,
+          padding: 0,
+        }}
+        leadingIcon={itemSelected?.[keyIdRender] === 'OTHER' ? 'check' : ''}
+      />
     </Menu>
   )
 }

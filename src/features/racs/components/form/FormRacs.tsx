@@ -98,8 +98,8 @@ const FormRacs = ({
           autoClose
         />
       )}
-      <View style={{ flexDirection: 'row' }}>
-        <View style={{ flex: 1 }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+        <View style={{ width: '50%' }}>
           <DropdownList
             keyIdRender="id"
             error={ctxForm.errors.place}
@@ -112,7 +112,20 @@ const FormRacs = ({
             autoClose
           />
         </View>
-        <View style={{ flex: 1 }}>
+        {ctxForm.racs.place?.id === 'OTHER' && (
+          <View style={{ width: '50%' }}>
+            <TextInput
+              onChangeText={ctxForm.onChangeValueRacs('otherPlace')}
+              value={ctxForm.racs.otherPlace || ''}
+              mode="outlined"
+              label="Ingresa lugar"
+              multiline
+              dense
+              error={ctxForm.errors.otherPlace}
+            />
+          </View>
+        )}
+        <View style={{ width: '50%' }}>
           <DropdownList
             keyIdRender="id"
             error={ctxForm.errors.company}
@@ -125,6 +138,19 @@ const FormRacs = ({
             autoClose
           />
         </View>
+        {ctxForm.racs.company?.id === 'OTHER' && (
+          <View style={{ width: '50%' }}>
+            <TextInput
+              onChangeText={ctxForm.onChangeValueRacs('otherCompany')}
+              value={ctxForm.racs.otherCompany || ''}
+              mode="outlined"
+              label="Ingresa empresa"
+              multiline
+              dense
+              error={ctxForm.errors.otherCompany}
+            />
+          </View>
+        )}
       </View>
       <TextInput
         onChangeText={ctxForm.onChangeValueRacs('description')}
@@ -132,6 +158,7 @@ const FormRacs = ({
         mode="outlined"
         label="Descripción breve del evento"
         multiline
+        dense
         error={ctxForm.errors.description}
       />
       <RadioButtonGroup
@@ -140,17 +167,34 @@ const FormRacs = ({
         items={classificationOptions}
         label="Clasificación"
       />
-      <DropdownList
-        keyIdRender="id"
-        error={ctxForm.errors.eventType}
-        defaultOptionSelected={defaultEventType}
-        keyRender="name"
-        label="Tipo de evento"
-        items={eventTypes}
-        itemSelected={ctxForm.racs.eventType}
-        callbackSelectedItem={ctxForm.onChangeValueRacs('eventType')}
-        autoClose
-      />
+      <View style={{ flexDirection: 'row' }}>
+        <View style={{ flex: 1 }}>
+          <DropdownList
+            keyIdRender="id"
+            error={ctxForm.errors.eventType}
+            defaultOptionSelected={defaultEventType}
+            keyRender="name"
+            label="Tipo de evento"
+            items={eventTypes}
+            itemSelected={ctxForm.racs.eventType}
+            callbackSelectedItem={ctxForm.onChangeValueRacs('eventType')}
+            autoClose
+          />
+        </View>
+        {ctxForm.racs.eventType?.id === 'OTHER' && (
+          <View style={{ flex: 1 }}>
+            <TextInput
+              onChangeText={ctxForm.onChangeValueRacs('otherEventType')}
+              value={ctxForm.racs.otherEventType || ''}
+              mode="outlined"
+              label="Ingrese tipo"
+              multiline
+              dense
+              error={ctxForm.errors.otherEventType}
+            />
+          </View>
+        )}
+      </View>
 
       <RadioButtonGroup
         onValueChange={ctxForm.onChangeValueRacs('status')}

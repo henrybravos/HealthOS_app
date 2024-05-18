@@ -40,7 +40,7 @@ const RadioButtonGroup = ({
           borderRadius: 4,
           backgroundColor: theme.colors.surface,
           flexWrap: 'wrap',
-          gap: -16,
+          gap: -20,
         }}
       >
         {items.map((item) => (
@@ -53,6 +53,7 @@ const RadioButtonGroup = ({
             labelStyle={{
               color: theme.colors.secondary,
               fontWeight: rest.value === item.value ? 'bold' : 'normal',
+              fontSize: 10,
             }}
             value={item.value}
           />
