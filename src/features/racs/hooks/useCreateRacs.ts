@@ -58,6 +58,15 @@ export const useCreateRacs = ({ resetForm, handleCreateRacs, racsDB }: UseCreate
     if (!uriEvidence) {
       errors.evidence = true
     }
+    if (racs.place?.id === 'OTHER' && !racs.otherPlace?.trim()) {
+      errors.otherPlace = true
+    }
+    if (racs.company?.id === 'OTHER' && !racs.otherCompany?.trim()) {
+      errors.otherCompany = true
+    }
+    if (racs.eventType?.id === 'OTHER' && !racs.otherEventType?.trim()) {
+      errors.otherEventType = true
+    }
     if (Object.keys(errors).length) {
       setErrors(errors)
       return false
