@@ -67,6 +67,9 @@ const LoginManagement = () => {
           <Text variant="bodySmall" style={styles.copyright}>
             {process.env.NODE_ENV} © {new Date().getFullYear()}
           </Text>
+          <Text variant="bodySmall" style={styles.copyright}>
+            WG-CONSULTORES - wgallardo@wg-consultores.com
+          </Text>
         </View>
       </View>
     </ScrollView>
