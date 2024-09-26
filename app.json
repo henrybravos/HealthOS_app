@@ -27,7 +27,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "owner": "wilson-gallardo",
+    "owner": "henry.bravo",
     "extra": {
       "eas": {
         "projectId": "e1ce8eb4-6760-4ba4-8fa9-b287c872dbf4"
